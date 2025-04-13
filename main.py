@@ -1,68 +1,33 @@
 import pgzrun
 from random import randint
+from time import time
 
-WIDTH=600
-HEIGHT=500
+WIDTH=800
+HEIGHT=470
 
-emmet=Actor("emmet")
-emmet.pos=100,100
+satellites=[]
+lines=[]
 
-stud=Actor("stud")
-stud.pos=500,400
+next_satellite=0
+start_time=0
+total_time=0
+end_time=0
+number_of_satellites=8
 
-stud2=Actor("stud2")
-stud2.pos=500,350
-
-score=0
-game_over=False
+def create_satellites():
+    global start_time
+    for i in range(0,number_of_satellites):
+        satellite=Actor("sat")
+        satellite.pos=randint(40,WIDTH-40),randint(40,HEIGHT-40)
+        satellites.append(satellite)
+    start_time=time()
 
 def draw():
-    screen.fill("blue")
-    emmet.draw()
-    stud.draw()
-    stud2.draw()
-    screen.draw.text("Score= "+str(score),color="cyan",topleft=(10,10))
-
-    if game_over:
-        screen.fill("black")
-        screen.draw.text("Time's up! Your final score is "+str(score),midtop=(WIDTH/2,10),color="cyan")
-
-def time_up():
-    global game_over
-    game_over=True
-
-def place_stud():
-    stud.x=randint(50,WIDTH-50)
-    stud.y=randint(0,HEIGHT-30)
-
-def place_stud2():
-    stud2.x=randint(50,WIDTH-50)
-    stud2.y=randint(0,HEIGHT-30)
-
-def update():
-    global score
-
-    if keyboard.left:
-        emmet.x = emmet.x -2
-    if keyboard.right:
-        emmet.x = emmet.x +2
-    if keyboard.up:
-        emmet.y = emmet.y -2
-    if keyboard.down:
-        emmet.y = emmet.y +2
-
-    collect=emmet.colliderect(stud)
-
-    collect2=emmet.colliderect(stud2)
-
-    if collect:
-        score=score+10
-        place_stud()
-
-    if collect2:
-        score=score+10
-        place_stud2()
-
-clock.schedule(time_up,60.0)
-
+    screen.blit("bg",(0,0))
+    num=1
+    for s in satellites:
+        screen.draw.text(str(num),(s.pos[0], s.pos[1]+20))
+        s.draw()
+        num=num+1
+create_satellites()
 pgzrun.go()
