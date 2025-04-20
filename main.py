@@ -1,33 +1,27 @@
 import pgzrun
 from random import randint
-from time import time
 
 WIDTH=800
 HEIGHT=470
 
-satellites=[]
-lines=[]
+eggs=[]
 
-next_satellite=0
-start_time=0
-total_time=0
-end_time=0
-number_of_satellites=8
+number_of_eggs=8
 
-def create_satellites():
-    global start_time
-    for i in range(0,number_of_satellites):
-        satellite=Actor("sat")
-        satellite.pos=randint(40,WIDTH-40),randint(40,HEIGHT-40)
-        satellites.append(satellite)
-    start_time=time()
+def create_eggs():
+    for i in range(0,number_of_eggs):
+        egg=Actor("egg")
+        egg.pos=randint(40,WIDTH-40),randint(40,HEIGHT-40)
+        eggs.append(egg)
 
 def draw():
-    screen.blit("bg",(0,0))
+    screen.blit("bgforegg",(0,0))
     num=1
-    for s in satellites:
+    for s in eggs:
         screen.draw.text(str(num),(s.pos[0], s.pos[1]+20))
         s.draw()
         num=num+1
-create_satellites()
+
+
+create_eggs()
 pgzrun.go()
