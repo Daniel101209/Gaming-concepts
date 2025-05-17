@@ -10,7 +10,7 @@ CENTRE = (CENTRE_X,CENTRE_Y)
 
 FINAL_LEVEL = 6
 START_SPEED = 10
-ITEMS=["plasticbag","battery","bottle","paperbag","packetofchips"]
+ITEMS=["1x1 piece","1x3 plate","2x2 piece","2x4 piece","cylinder piece"]
 
 game_over = False
 game_complete = False
@@ -43,7 +43,7 @@ def make_items(number_of_extra_items):
     return new_items
 
 def get_option_to_create(number_of_extra_items):
-    item_to_create=["paperbag"]
+    item_to_create=["cylinder piece"]
     for i in range(0,number_of_extra_items):
         random_option=random.choice(ITEMS)
         item_to_create.append(random_option)
@@ -58,7 +58,7 @@ def create_items(items_to_create):
 
 def layout_items(items_to_layout):
     number_of_gaps= len(items_to_layout) + 1
-    gap_size=WIDTH/number_of_gaps
+    gap_size= WIDTH/number_of_gaps
     random.shuffle(items_to_layout)
     for index,item in enumerate(items_to_layout):
         new_x_pos = (index + 1)* gap_size
@@ -80,7 +80,7 @@ def on_mouse_down(pos):
     global items, current_level
     for item in items:
         if item.collidepoint(pos):
-            if "paperbag" in item.image:
+            if "cylinder piece" in item.image:
                 handle_game_complete()
             else:
                 handle_game_over()
