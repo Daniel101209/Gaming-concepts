@@ -1,107 +1,80 @@
 import pgzrun
 import random
 
-WIDTH=800
-HEIGHT=600
-CENTRE_X = WIDTH//2
-CENTRE_Y = HEIGHT//2
-CENTRE = (CENTRE_X,CENTRE_Y)
+WIDTH = 1200
+HEIGHT = 600
 
+WHITE=(255,255,255)
+BLUE=(0,0,255)
 
-FINAL_LEVEL = 6
-START_SPEED = 10
-ITEMS=["1x1 piece","1x3 plate","2x2 piece","2x4 piece","cylinder piece"]
+ship= Actor('galaga')
+bug=Actor('bug')
 
-game_over = False
-game_complete = False
-current_level=1
-items=[]
-animations=[]
+ship.pos=(WIDTH//2, HEIGHT-60)
 
-def draw():
-    global items,current_level,game_complete,game_over
-    screen.clear()
-    screen.blit("background",(0,0))
-    if game_over:
-        display_message("GAME OVER","Try again")
-    elif game_complete:
-        display_message("You won","Well done")
-    else:
-        for item in items:
-            item.draw()
+speed=5
+
+bullets=[]
+enemies=[]
+
+enemies.append(Actor('bug'))
+enemies[-1].x=10
+enemies[-1].y=-100
+
+score=0
+
+def displayScore():
+    screen.draw.text(str(score),(50,30))
+
+def on_key_down(key):
+    if key == keys.SPACE:
+        bullets.append(Actor('bullet'))
+        bullets[-1].x=ship.x
+        bullets[-1].y=ship.y - 50
 
 def update():
-    global items
-    if len(items) == 0:
-        items=make_items(current_level)
+    global score
+    if keyboard.left:
+        ship.x -= speed
+        if ship.x <=0:
+            ship.x=0
+    elif keyboard.right:
+        ship.x += speed
+        if ship.x >= 1200:
+            ship.x=1200
+    if keyboard.space:
+        print("Pressing space")
+        bullets.append(Actor('bullet'))
+        bullets[-1].x=ship.x
+        bullets[-1].y=ship.y
 
-def make_items(number_of_extra_items):
-    items_to_create=get_option_to_create(number_of_extra_items)
-    new_items=create_items(items_to_create)
-    layout_items(new_items)
-    animate_items(new_items)
-    return new_items
+    for bullet in bullets:
+        if bullet.y <=0:
+            bullets.remove(bullet)
+        else:
+            bullet.y -=10
+    
+    for enemy in enemies:
+        enemy.y +=5
 
-def get_option_to_create(number_of_extra_items):
-    item_to_create=["cylinder piece"]
-    for i in range(0,number_of_extra_items):
-        random_option=random.choice(ITEMS)
-        item_to_create.append(random_option)
-    return item_to_create
+        if enemy.y >= HEIGHT:
+            enemy.y= -100
+            enemy.x=random.randint(50,WIDTH-50)
 
-def create_items(items_to_create):
-    new_items=[]
-    for option in items_to_create:
-        item=Actor(option)
-        new_items.append(item)
-    return new_items
+        for bullet in bullets:
+            if enemy.colliderect(bullet):
+                score=score+100
+                bullets.remove(bullet)
+                enemies.remove(enemy)
 
-def layout_items(items_to_layout):
-    number_of_gaps= len(items_to_layout) + 1
-    gap_size= WIDTH/number_of_gaps
-    random.shuffle(items_to_layout)
-    for index,item in enumerate(items_to_layout):
-        new_x_pos = (index + 1)* gap_size
-        item.x = new_x_pos
-
-def animate_items(items_to_animate):
-    global animations
-    for item in items_to_animate:
-        duration=START_SPEED- current_level
-        item.anchor=("center","bottom")
-        animation = animate(item,duration=duration,on_finished=handle_game_over,y=HEIGHT)
-        animations.append(animation)
-
-def handle_game_over():
-    global game_over
-    game_over=True
-
-def on_mouse_down(pos):
-    global items, current_level
-    for item in items:
-        if item.collidepoint(pos):
-            if "cylinder piece" in item.image:
-                handle_game_complete()
-            else:
-                handle_game_over()
-
-def handle_game_complete():
-    global current_level,items,animations, game_complete
-    stop_animations(animations)
-    if current_level == FINAL_LEVEL:
-        game_complete=True
-    else:
-        current_level = current_level+1
-        items=[]
-        animations=[]
-
-def stop_animations(animations_to_stop):
-    for animation in animations_to_stop:
-        if animation.running:
-            animation.stop()
-
-def display_message(heading_text, sub_heading_text):
-    screen.draw.text(heading_text,fontsize=60,center=CENTRE,color="white")
-    screen.draw.text(sub_heading_text,fontsize=30,center=(CENTRE_X,CENTRE_Y+30),color="white")
+def draw():
+    screen.clear()
+    screen.fill(BLUE)
+    for bullet in bullets:
+        bullet.draw()
+    for enemy in enemies:
+        enemy.draw()
+    ship.draw()
+    displayScore()
 
 pgzrun.go()
