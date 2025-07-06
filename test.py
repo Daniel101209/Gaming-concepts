@@ -35,6 +35,7 @@ def move_poition():
     global position
     if witch.colliderect(poition):
         animate(poition,"bounce_end",duration=1,pos=next(position))
+        screen.draw.text("You won!",color="red",center=(100,100))
 
 move_poition()
 update()
