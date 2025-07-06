@@ -1,23 +1,51 @@
-import pygame
+import pgzrun
+import random
 
-pygame.init()
+TITLE = 'Flappy ball'
+WIDTH = 800
+HEIGHT = 600
 
-screen=pygame.display.set_mode((800,600))
-pygame.display.set_caption("Understanding OOP")
+r=random.randint(0,255)
+g=random.randint(0,255)
+b=random.randint(0,255)
+CLR = r,g,b
 
-class Rect():
-    def __init__(self,color,dimensions):
-        self.place=screen
-        self.c=color
-        self.dim=dimensions
+GRAVITY = 2000
+
+class Ball:
+    def __init__(self, initial_x, initial_y):
+        self.x = initial_x
+        self.y = initial_y
+        self.vx = 200
+        self.vy = 0
+        self.radius = 40
 
     def draw(self):
-        self.draw_rect=pygame.draw.rect(self.place,self.c,self.dim)
+        pos = (self.x, self.y)
+        screen.draw.filled_circle(pos, self.radius, CLR)
 
-r1=Rect("magenta",(90,30,300,300))
-r1.draw()
+ball = Ball(50, 100)
 
-r2=Rect("lime",(40,120,0,0))
-r2.draw()
+def draw():
+    screen.clear()
+    ball.draw()
 
-pygame.display.update()
+def update(dt):
+    uy = ball.vy
+    ball.vy += GRAVITY *dt
+    ball.y += (uy + ball.vy) *0.5*dt
+
+    if ball.y > HEIGHT - ball.radius:
+        ball.y = HEIGHT - ball.radius
+        ball.vy = -ball.vy * 0.9
+
+    ball.x += ball.vx *dt
+    if ball.x > WIDTH - ball.radius or ball.x < ball.radius:
+        ball.vx = -ball.vx
+
+def on_key_down(key):
+    if key == keys.SPACE:
+        ball.vy = -500
+
+pgzrun.go()
+
