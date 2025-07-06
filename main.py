@@ -14,10 +14,10 @@ class Rect():
     def draw(self):
         self.draw_rect=pygame.draw.rect(self.place,self.c,self.dim)
 
-r1=Rect("red",(90,30,300,300))
+r1=Rect("magenta",(90,30,300,300))
 r1.draw()
 
-r2=Rect("blue",(40,120,0,0))
+r2=Rect("lime",(40,120,0,0))
 r2.draw()
 
 pygame.display.update()
