@@ -1,46 +1,52 @@
-#Importing the needed modules
 import pygame
+import time
 
 pygame.init()
-#Setting up the screen
-screen=pygame.display.set_mode((600,600))
-screen.fill((255,255,255))
 
-blue=(0,0,255)
+WIDTH=800
+HEIGHT=600
 
-pygame.display.update()
-#Creating the class for circles
-class Circle():
-    def __init__(self,color,pos,radius,width):
-        self.circle_color=color
-        self.circle_pos=pos
-        self.circle_radius=radius
-        self.circle_width=width
-        self.circle_surface=screen
-#Creating the circle
-    def draw(self):
-        self.Draw_circle=pygame.draw.circle(self.circle_surface,self.circle_color,self.circle_pos,self.circle_radius,self.circle_width)
-#Creating the function for the circle to gorw 
-    def grow(self,r):
-        self.circle_radius=self.circle_radius+r
-        self.Draw_circle=pygame.draw.circle(self.circle_surface,self.circle_color,self.circle_pos,self.circle_radius,self.circle_width)
-#Selecting the color for the circle
-circle=Circle(blue,(300,300),25,0)
-circle2=Circle("orange",(200,200),10,0)
-circle3=Circle("green",(400,400),5,0)
-#Creating the while loop that will react to mouse clicking and activating the grow function
-while 1:
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("Birthday Greeting card")
+
+image=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/birthday/images/birthday card 1.jpg")
+image=pygame.transform.scale(image,(WIDTH,HEIGHT))
+
+gameloop = True
+while (gameloop):
+
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            screen.fill((255,255,255))
-            circle.draw()
-            circle2.draw()
-            circle2.draw()
-            pygame.display.update()
-        elif event.type == pygame.MOUSEBUTTONUP:
-            screen.fill((255,255,255))
-            circle.grow(20)
-            circle2.grow(8)
-            circle3.grow(4)
-            pygame.display.update()
+        if event.type == pygame.QUIT:
+            gameloop=False
+    
+    font=pygame.font.SysFont("Comic Sans MS",50)
+    font1=pygame.font.SysFont("Comic Sans MS",40)
+    t1=font.render("Happy",True,"blue")
+    t2=font.render("Birthday!",True,"blue")
+    screen.blit(image,(0,0))
+    screen.blit(t1,(280,250))
+    screen.blit(t2,(280,330))
+    pygame.display.update()
+    time.sleep(2)
 
+    image2=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/birthday/images/birthday card 2.jpg")
+    image2=pygame.transform.scale(image2,(WIDTH,HEIGHT))
+
+    t3=font.render("Wish you a bright future ahead!",True,"blue")
+    screen.fill("white")
+    screen.blit(image2,(0,0))
+    screen.blit(t3,(30,200))
+    pygame.display.update()
+    time.sleep(2)
+
+    image3=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/birthday/images/birthday card 3.jpg")
+    image3=pygame.transform.scale(image3,(WIDTH,HEIGHT))
+
+    t4=font1.render("Wish you always be healthy and happy!",True,"blue")
+    screen.fill("white")
+    screen.blit(image3,(0,0))
+    screen.blit(t4,(30,200))
+    pygame.display.update()
+    time.sleep(2)
+ 
+pygame.quit()
