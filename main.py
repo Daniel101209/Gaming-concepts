@@ -1,66 +1,36 @@
 import pygame
-from pygame.locals import *
-from time import *
 
 pygame.init()
 
-screen=pygame.display.set_mode((600,600))
+screen=pygame.display.set_mode((900,500))
+pygame.display.set_caption("Space game")
 
-player_x=200
-player_y=200
+background = pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/galaxy.jpg")
+background=pygame.transform.scale(background,(900,500))
 
-keys=[False,False,False,False]
+x= 450
+player_ship=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/spaceship.png")
+player_ship=pygame.transform.scale(player_ship,(100,100))
 
-player=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/rocket in space/Rocket.png")
-player=pygame.transform.scale(player,(100,100))
-background=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/rocket in space/galaxy.jpg")
-background=pygame.transform.scale(background,(600,600))
+gameloop=True
+FPS=60
+clock=pygame.time.Clock()
 
-while player_y < 600:
-    screen.blit(background,(0,0))
-    screen.blit(player,(player_x,player_y))
-    pygame.display.flip()
-
+while gameloop:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit(0)
+        if event.type ==pygame.QUIT:
+            gameloop = False
 
     if event.type == pygame.KEYDOWN:
-        if event.key == K_UP:
-            keys[0]=True
-        elif event.key == K_LEFT:
-            keys[1]=True
-        elif event.key == K_DOWN:
-            keys[2]=True
-        if event.key == K_RIGHT:
-            keys[3]=True
+        if event.key == pygame.K_LEFT:
+            x=x-3
+        elif event.key == pygame.K_RIGHT:
+            x=x+3
 
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_UP:
-            keys[0]=False
-        elif event.key == pygame.K_LEFT:
-            keys[1]=False
-        elif event.key == pygame.K_DOWN:
-            keys[2]=False
-        if event.key == pygame.K_RIGHT:
-            keys[3]=False
+    screen.blit(background,(0,0))
+    screen.blit(player_ship,(x,400))
 
-    if keys[0]:
-        if player_y > 0:
-            player_y -= 7
-    elif keys[2]:
-        if player_y < 550:
-            player_y += 7
+    pygame.display.flip()
+    clock.tick(FPS)
 
-    if keys[1]:
-        if player_x > 0:
-            player_x -= 2
-    elif keys[3]:
-        if player_x < 550:
-            player_x += 2
-    
-    player_y += 5
-    sleep(0.05)
-
-print("Game over!")
+pygame.quit()
