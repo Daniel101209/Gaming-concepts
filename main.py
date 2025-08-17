@@ -19,7 +19,8 @@ spaceship2=pygame.transform.scale(spaceship2,(100,100))
 spaceship2_rect=spaceship2.get_rect(center=(x1,10))
 
 bullet=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/bullet.png")
-bullet=pygame.transform.scale(bullet,(10,10))
+bullet=pygame.transform.scale(bullet,(30,30))
+bullet=pygame.transform.rotate(bullet,-90)
 
 bullets = []
 
