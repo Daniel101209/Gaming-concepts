@@ -2,62 +2,53 @@ import pygame
 
 pygame.init()
 
-screen=pygame.display.set_mode((900,500))
-pygame.display.set_caption("Space game")
+screen=pygame.display.set_mode((600,600))
+pygame.display.set_caption("Match it!")
 
-background = pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/galaxy.jpg")
-background=pygame.transform.scale(background,(900,500))
+subway_surfers=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/match the following/subway surfers.png")
+candy_crush=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/match the following/candy crush.png")
+cut_the_rope=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/match the following/cut the rope.png")
+angry_birds=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/match the following/angry birds.png")
 
-x= 450
-player_ship=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/spaceship.png")
-player_ship=pygame.transform.scale(player_ship,(100,100))
+subway_surfers = pygame.transform.scale(subway_surfers,(100,100))
+candy_crush = pygame.transform.scale(candy_crush,(100,100))
+cut_the_rope = pygame.transform.scale(cut_the_rope,(100,100))
+angry_birds = pygame.transform.scale(angry_birds,(100,100))
 
-x1= 450
-spaceship2 = pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/spaceship2.png")
-spaceship2=pygame.transform.rotate(spaceship2,180)
-spaceship2=pygame.transform.scale(spaceship2,(100,100))
-spaceship2_rect=spaceship2.get_rect(center=(x1,10))
+f=pygame.font.SysFont("Comic Sans MS",36)
 
-bullet=pygame.image.load("C:/Users/User/Desktop/gaming concepts/PRO GAME DEV/space game/bullet.png")
-bullet=pygame.transform.scale(bullet,(30,30))
-bullet=pygame.transform.rotate(bullet,-90)
+text1=f.render("Subway Surfers",True,"white")
+text2=f.render("Candy Crush",True,"white")
+text3=f.render("Cut The Rope",True,"white")
+text4=f.render("Angry Birds",True,"white")
 
-bullets = []
-
-gameloop=True
-FPS=60
-clock=pygame.time.Clock()
+gameloop = True
 
 while gameloop:
+    screen.fill("Black")
     for event in pygame.event.get():
-        if event.type ==pygame.QUIT:
-            gameloop = False
+        if event.type == pygame.QUIT:
+            gameloop=False
 
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_LEFT and x > 0:
-            x=x-3
-        elif event.key == pygame.K_RIGHT and x < 800:
-            x=x+3
-        
-    keys=pygame.key.get_pressed()
-    if keys[pygame.K_a] and x1 > 0:
-        x1=x1-3
-    if keys[pygame.K_d] and x1 < 800:
-        x1=x1+3
+        screen.blit(subway_surfers,(150,205))
+        screen.blit(candy_crush,(150,5))
+        screen.blit(cut_the_rope,(150,305))
+        screen.blit(angry_birds,(150,105))
 
-    if keys[pygame.K_SPACE]:
-        bullet_rect=bullet.get_rect(center=spaceship2_rect.midtop)
-        bullets.append({"rect":bullet_rect})
-    for b in bullets:
-        b["rect"].y=b["rect"].y+5
+        screen.blit(text1,(300,50))
+        screen.blit(text2,(300,150))
+        screen.blit(text3,(300,250))
+        screen.blit(text4,(300,350))
 
-
-    screen.blit(background,(0,0))
-    screen.blit(player_ship,(x,400))
-    screen.blit(spaceship2,(x1,10))
-    for b in bullets:
-        screen.blit(bullet,b["rect"])
-    pygame.display.flip()
-    clock.tick(FPS)
-
+    
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            pos=pygame.mouse.get_pos()
+            pygame.draw.circle(screen,"cyan",(pos),20,0)
+            pygame.display.update()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            pos2=pygame.mouse.get_pos()
+            pygame.draw.line(screen,"hotpink",(pos),(pos2),5)
+            pygame.draw.circle(screen,"cyan",(pos2),20,0)
+            pygame.display.update()
+        pygame.display.update()
 pygame.quit()
