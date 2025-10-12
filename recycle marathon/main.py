@@ -78,14 +78,43 @@ while playing:
     if timeElapsed >= 60:
         if score > 50:
             text=font.render(" Bin loot successful ",True,"red")
-            change_background("")
+            change_background("recycle marathon\you win.jpg")
         else:
             text=font.render(" Better luck next time ",True,"red")
-            change_background("")
+            change_background("recycle marathon\game over.jpg")
     else:
         change_background("recycle marathon/bground.png")
         countDown=font.render("Time left: "+str(60-int(timeElapsed)),True,"white")
         screen.blit(countDown,(20,10))
+
+        keys=pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            if bin.rect.y> 0:
+                bin.rect.y -= 5
+        if keys[pygame.K_DOWN]:
+            if bin.rect.y< 630:
+                bin.rect.y += 5
+
+        if keys[pygame.K_LEFT]:
+            if bin.rect.x> 0:
+                bin.rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            if bin.rect.x< 850:
+                bin.rect.x += 5
+
+        item_hit_list=pygame.sprite.spritecollide(bin,item_list,True)
+        plastic_hit_list=pygame.sprite.spritecollide(bin,plastic_list,True)
+
+        for item in item_hit_list:
+            score=score+3
+            text=font.render("Score="+str(score),True,"white")
+
+        for plastic in plastic_hit_list:
+            score=score-5
+            text=font.render("Score="+str(score),True,"white")
+
+        screen.blit(text,(20,50))
+        allsprites.draw(screen)
 
     pygame.display.flip()
 
